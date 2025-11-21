@@ -67,7 +67,7 @@ registry.curiola.com:80 {
     }
 
     reverse_proxy 127.0.0.1:5000
-})
+}
 ```
 
 ## Configuration
