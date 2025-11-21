@@ -1,0 +1,25 @@
+version: "3"
+
+tasks:
+  build:
+    cmds:
+      - docker build --quiet --build-arg API_TOKEN=nicks_api_token --build-arg TARGET_URL=https://amaze-api.curiola.com/hello -t helloworld:1.0.0 image/
+  run:
+    cmds:
+      - docker run helloworld:1.0.0
+  start-endpoint:
+    cmds:
+      - go run endpoint.go
+  start-registry:
+    cmds:
+      - |
+        docker run --restart=always \
+          -p 5000:5000 \
+          -v ./registry/data:/var/lib/registry \
+          -v ./registry/config/config.yml:/etc/docker/registry/config.yml:ro \
+          registry:2
+  push:
+    cmds:
+      - docker login registry.curiola.com
+      - docker tag helloworld:1.0.0 registry.curiola.com/helloworld:1.0.0
+      - docker push registry.curiola.com/helloworld:1.0.0
